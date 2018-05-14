@@ -16,31 +16,31 @@ public class CateDao {
 	
 	public CateVo cateInsert(CateVo cateVo) {
 		System.out.println(cateVo.toString());
-		sqlSession.insert("blog.cateInsert",cateVo);
+		sqlSession.insert("cate.cateInsert",cateVo);
 		System.out.println(cateVo.toString());
 		return cateVo;
 	}
 	
 	public List<CateVo> catelist(String id){
 		
-		return sqlSession.selectList("blog.catelist",id);
+		return sqlSession.selectList("cate.catelist",id);
 		
 	}
 	
 	public int catedelete(int cateNo) {
 		
-		return sqlSession.delete("blog.catedelete",cateNo);
+		return sqlSession.delete("cate.catedelete",cateNo);
 		
 	}
 	
 	public List<CateVo> getCateList(String id){
 		
-		return sqlSession.selectList("blog.getCateList",id);
+		return sqlSession.selectList("cate.getCateList",id);
 	}
 	
 	public void insertCate(UserVo userVo) {
 
-		sqlSession.selectOne("blog.insertCate", userVo);
+		sqlSession.selectOne("cate.insertCate", userVo);
 
 	}
 

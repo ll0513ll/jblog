@@ -2,20 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="blog">
-	
-<insert id="insertPost" parameterType="com.javaex.vo.PostVo">
-	
-	<![CDATA[
-		insert into post
-		values(seq_post_no.nextval,					
-								#{cateNo},
-								#{postTitle},
-								#{postContent},
-								sysdate
-								)
-	]]>
-
-</insert>
 
 <insert id="insert" parameterType="com.javaex.vo.UserVo">
 	
@@ -28,44 +14,6 @@
 	]]>
 
 </insert>
-
-<insert id="insertCate" parameterType="com.javaex.vo.UserVo">
-	
-	<![CDATA[
-		insert into category
-		values(seq_category_no.nextval,		
-						#{id},
-						'미분류',
-						'기본으로 만들어지는 카테고리입니다.',
-						sysdate
-								)
-	]]>
-
-</insert>
-
-<select id="getList" parameterType="int" resultType="com.javaex.vo.PostVo">
-
-	<![CDATA[
-		
-		select *
-		from post
-		where cateNo=#{cateNo} 
-	
-	]]>
-
-</select>
-
-<select id="getCateList" resultType="com.javaex.vo.CateVo">
-
-	<![CDATA[
-		
-		select *
-		from category 
-		where id=#{id}
-	
-	]]>
-
-</select>
 
 <select id="serchId" parameterType="String" resultType="String">
 
@@ -101,62 +49,5 @@
 		]]>
 	
 </update>
-	
-<insert id="cateInsert" parameterType="com.javaex.vo.CateVo">
-	<selectKey keyProperty="cateNo" resultType="int" order="BEFORE">
-		select seq_category_no.nextval from dual
-	</selectKey>
-	<![CDATA[
-		insert into category
-		values(	#{cateNo},
-				#{id},
-				#{cateName},
-				#{description},
-				sysdate
-				)
-	]]>
-
-</insert>
-
-<select id="catelist" parameterType="String" resultType="com.javaex.vo.CateVo">
-
-	<![CDATA[
-		
-		select c.cateNo,c.id,c.cateName,c.description,c.regDate,nvl(p.postTime,0) no
-		from (  select *
-        		from category
-       			order by cateNo asc) c left join (   select cateNo, count(postNo) postTime 
-                                            		from post
-                                           			group by cateNo) p on c.cateNo=p.cateNo
-		where c.id=#{id}
-		order by c.cateNo asc
-	
-	]]>
-
-</select>
-
-<delete id="catedelete" parameterType="int">
-
-	<![CDATA[
-		
-		delete
-		from category 
-		where cateNo=#{cateNo}
-	
-	]]>
-
-</delete>
-
-<select id="getPostTime" parameterType="int" resultType="int">
-
-	<![CDATA[
-		
-		select count(*)
-		from post
-		where cateNo=#{cateNo}
-	
-	]]>
-
-</select>
 
 </mapper>

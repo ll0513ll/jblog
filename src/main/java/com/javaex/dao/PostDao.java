@@ -15,17 +15,17 @@ public class PostDao {
 	private SqlSession sqlSession;
 	
 	public List<PostVo> getPostList(int cateNo){
-		return sqlSession.selectList("blog.getList",cateNo);
+		return sqlSession.selectList("post.getPostList",cateNo);
 	}
 	
 	public void postUpload(PostVo postVo) {
 
-		sqlSession.insert("blog.insertPost", postVo);
+		sqlSession.insert("post.insertPost", postVo);
 	}
 
 	public int getPostTime(int cateNo) {
 
-		return sqlSession.selectOne("blog.getPostTime", cateNo);
+		return sqlSession.selectOne("post.getPostTime", cateNo);
 
 	}
 
