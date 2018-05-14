@@ -28,5 +28,10 @@ public class PostDao {
 		return sqlSession.selectOne("post.getPostTime", cateNo);
 
 	}
+	
+	public PostVo getPostOne(int postNo) {
+		
+		return sqlSession.selectOne("post.getPostOne",postNo);
+	}
 
 }

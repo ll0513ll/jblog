@@ -41,4 +41,16 @@
 
 </select>
 
+<select id="getPostOne" parameterType="int" resultType="com.javaex.vo.PostVo">
+
+	<![CDATA[
+		
+			select *
+			from post
+			where postNo=#{postNo} 
+	
+	]]>
+
+</select>
+
 </mapper>

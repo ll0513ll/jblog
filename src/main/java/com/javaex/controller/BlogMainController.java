@@ -38,25 +38,30 @@ public class BlogMainController {
 		BlogVo blogVo = blogService.getblog(id);
 		List<CateVo> cateList = cateService.catelist(id);
 		
-		List<PostVo> catelist=null;
+		List<PostVo> postlist=null;
 		if(!cateList.isEmpty()) {
 			if(cateNo==-1) {
-				catelist = postService.getPostList(cateList.get(0).getCateNo());
+				postlist = postService.getPostList(cateList.get(0).getCateNo());
 			}else {
-				catelist = postService.getPostList(cateNo);
+				postlist = postService.getPostList(cateNo);
 			}
 		}
 		
-		List<PostVo> postlist=null;
-		if(!catelist.isEmpty()) {
+		
+		
+		PostVo PostOne=null;
+		if(!postlist.isEmpty()) {
 			if(postNo==-1) {
-				postlist = postService.getPostList(catelist.get(0).getCateNo());
+				PostOne = postService.getPostOne(postlist.get(0).getPostNo());
 			}else {
-				postlist = postService.getPostList(postNo);
+				PostOne = postService.getPostOne(postNo);
+
 			}
 		}
+		
 		
 		model.addAttribute("postlist",postlist);
+		model.addAttribute("PostOne",PostOne);
 		model.addAttribute("serchId",id);
 		model.addAttribute("blogVo",blogVo);
 		model.addAttribute("cateList",cateList);

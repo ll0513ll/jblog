@@ -22,5 +22,10 @@ public class PostService {
 
 		postDao.postUpload(postVo);
 	}
+	
+	public PostVo getPostOne(int postNo) {
+		
+		return postDao.getPostOne(postNo);
+	}
 
 }
