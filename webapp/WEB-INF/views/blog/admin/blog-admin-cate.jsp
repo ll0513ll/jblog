@@ -56,12 +56,7 @@
 			</div>
 		</div>
 		
-		<!-- 푸터-->
-		<div id="footer">
-			<p>
-				<strong>Spring 이야기</strong> is powered by JBlog (c)2018
-			</p>
-		</div>
+		<c:import url = "/WEB-INF/views/includes/footer.jsp"></c:import>
 	</div>
 </body>
 

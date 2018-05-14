@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -15,8 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.javaex.dao.BlogDao;
 import com.javaex.vo.BlogVo;
-import com.javaex.vo.CateVo;
-import com.javaex.vo.PostVo;
 
 @Service
 public class BlogService {
@@ -24,13 +21,10 @@ public class BlogService {
 	@Autowired
 	private BlogDao blogDao;
 	
-	public BlogVo insert() {
-		
-		return null;
-	}
 	
-	public List<PostVo> getPostList(int cateNo){
-		return blogDao.getPostList(cateNo);
+	public BlogVo getblog(String id) {
+
+		return blogDao.getblog(id);
 	}
 	
 	public String serchId(String id) {
@@ -38,12 +32,8 @@ public class BlogService {
 		return blogDao.serchId(id);
 	}
 	
-	public BlogVo getblog(String id) {
-		
-		return blogDao.getblog(id);
-	}
-	
 	public void modify(String id,MultipartFile file,String blogTitle) {
+		
 		System.out.println("사진수정 서비스");
 		
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -84,38 +74,4 @@ public class BlogService {
 		
 	}
 	
-	public CateVo cateUpload(CateVo cateVo) {
-		
-		return blogDao.cateInsert(cateVo);
-	
-	}
-	
-	public List<CateVo> catelist(String id){
-		
-		return blogDao.catelist(id);
-	}
-	
-	public int catedelete(int cateNo) {
-		
-		int result=0;
-		
-		int postTime = blogDao.getPostTime(cateNo);
-		if(postTime==0) {
-			result = blogDao.catedelete(cateNo);
-		}
-		
-		
-		return result;
-				
-	}
-	
-	public List<CateVo> getCateList(String id){
-		
-		return blogDao.getCateList(id);
-	}
-	
-	public void postUpload(PostVo postVo) {
-		
-		blogDao.postUpload(postVo);
-	}
 }

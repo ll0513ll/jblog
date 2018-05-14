@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.javaex.service.BlogService;
+import com.javaex.service.CateService;
+import com.javaex.service.PostService;
 import com.javaex.vo.BlogVo;
 import com.javaex.vo.CateVo;
 import com.javaex.vo.PostVo;
@@ -25,40 +27,11 @@ public class BlogController {
 	
 	@Autowired
 	private BlogService blogService;
-	@RequestMapping(value="",method=RequestMethod.GET)
-	public String blogMain(@PathVariable("id") String id, Model model,
-						   @RequestParam(value="cateNo",required=false,defaultValue="-1")Integer cateNo,
-						   @RequestParam(value="postNo",required=false,defaultValue="-1")Integer postNo) {
-		
-		blogService.serchId(id);
-		BlogVo blogVo = blogService.getblog(id);
-		List<CateVo> cateList = blogService.catelist(id);
-		
-		List<PostVo> catelist=null;
-		if(!cateList.isEmpty()) {
-			if(cateNo==-1) {
-				catelist = blogService.getPostList(cateList.get(0).getCateNo());
-			}else {
-				catelist = blogService.getPostList(cateNo);
-			}
-		}
-		
-		List<PostVo> postlist=null;
-		if(!catelist.isEmpty()) {
-			if(postNo==-1) {
-				postlist = blogService.getPostList(catelist.get(0).getCateNo());
-			}else {
-				postlist = blogService.getPostList(postNo);
-			}
-		}
-		
-		model.addAttribute("postlist",postlist);
-		model.addAttribute("serchId",id);
-		model.addAttribute("blogVo",blogVo);
-		model.addAttribute("cateList",cateList);
-		
-		return "blog/blog-main";
-	}
+	@Autowired
+	private CateService cateService;
+	@Autowired
+	private PostService postService;
+	
 	
 	@RequestMapping(value="/admin/basic",method=RequestMethod.GET)
 	public String basic(@PathVariable("id") String id, Model model) {
@@ -68,13 +41,22 @@ public class BlogController {
 		return"blog/admin/blog-admin-basic";
 	}
 	
+	@RequestMapping(value="/admin/category",method=RequestMethod.GET)
+	public String category(@PathVariable("id") String id, Model model) {
+		
+		BlogVo blogVo = blogService.getblog(id);
+		model.addAttribute("blogVo",blogVo);
+		
+		return "blog/admin/blog-admin-cate";
+	}
+	
 	@RequestMapping(value="/admin/write",method=RequestMethod.GET)
 	public String writeForm(@PathVariable("id") String id, Model model) {
 		
 		BlogVo blogVo = blogService.getblog(id);
 		model.addAttribute("blogVo",blogVo);
 		
-		List<CateVo> list = blogService.getCateList(id);
+		List<CateVo> list = cateService.getCateList(id);
 		System.out.println(list.toString());
 		model.addAttribute("cateList",list);
 		
@@ -90,15 +72,6 @@ public class BlogController {
 		return"redirect:/{id}/admin/basic";
 	}
 	
-	@RequestMapping(value="/admin/category",method=RequestMethod.GET)
-	public String category(@PathVariable("id") String id, Model model) {
-		
-		BlogVo blogVo = blogService.getblog(id);
-		model.addAttribute("blogVo",blogVo);
-		
-		return "blog/admin/blog-admin-cate";
-	}
-	
 	@ResponseBody
 	@RequestMapping(value="/cateUpload",method=RequestMethod.POST)
 	public CateVo cateUpload(@PathVariable("id") String id, Model model,@RequestBody CateVo cateVo) {
@@ -107,7 +80,7 @@ public class BlogController {
 		System.out.println(cateVo.toString());
 		BlogVo blogVo = blogService.getblog(id);
 		model.addAttribute("blogVo",blogVo);
-		CateVo catevo=blogService.cateUpload(cateVo);
+		CateVo catevo=cateService.cateUpload(cateVo);
 		return catevo;
 		
 	}
@@ -118,7 +91,7 @@ public class BlogController {
 		
 		BlogVo blogVo = blogService.getblog(id);
 		model.addAttribute("blogVo",blogVo);
-		return blogService.catelist(id);
+		return cateService.catelist(id);
 		
 	}
 	
@@ -128,7 +101,7 @@ public class BlogController {
 		
 		BlogVo blogVo = blogService.getblog(id);
 		model.addAttribute("blogVo",blogVo);
-		int result = blogService.catedelete(cateNo);
+		int result = cateService.catedelete(cateNo);
 		
 		if(result!=0) {
 			return cateNo;
@@ -145,7 +118,7 @@ public class BlogController {
 		model.addAttribute("blogVo",blogVo);
 		
 		System.out.println(postVo.toString());
-		blogService.postUpload(postVo);
+		postService.postUpload(postVo);
 		
 		return "redirect:/{id}/admin/write";
 	}

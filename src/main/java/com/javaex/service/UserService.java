@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.javaex.dao.BlogDao;
+import com.javaex.dao.CateDao;
 import com.javaex.dao.UserDao;
 import com.javaex.vo.UserVo;
 
@@ -17,12 +18,14 @@ public class UserService {
 	private UserDao userDao;
 	@Autowired
 	private BlogDao blogDao;
+	@Autowired
+	private CateDao cateDao;
 	
 	public void join(UserVo userVo) {
 		
 		userDao.insert(userVo);
 		blogDao.insert(userVo);
-		blogDao.insertCate(userVo);
+		cateDao.insertCate(userVo);
 
 	}
 	
